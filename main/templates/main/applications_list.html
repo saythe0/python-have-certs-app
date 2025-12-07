@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container container-large">
-	<h2>📋 Мои заявки</h2>
+	<h2>Мои заявки</h2>
 
 	<a href="{% url 'application_create' %}" class="btn" style="margin-bottom: 30px;">Создать новую заявку</a>
 
@@ -44,7 +44,7 @@
 			{% if application.status == 'completed' %}
 			{% if application.review %}
 			<div class="review-section">
-				<h4>📝 Ваш отзыв:</h4>
+				<h4>Ваш отзыв:</h4>
 				<div class="review-text">
 					{{ application.review.text }}
 				</div>
@@ -52,7 +52,7 @@
 			</div>
 			{% else %}
 			<div class="review-action">
-				<p>✅ Обучение завершено! Оставьте отзыв о курсе.</p>
+				<p>Обучение завершено! Оставьте отзыв о курсе.</p>
 				<a href="{% url 'review_create' application.pk %}" class="btn btn-review">Оставить отзыв</a>
 			</div>
 			{% endif %}
