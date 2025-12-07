@@ -1,0 +1,75 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container">
+	<h2>📝 Создать заявку</h2>
+
+	<form method="post" novalidate>
+		{% csrf_token %}
+
+		{% if form.non_field_errors %}
+		<ul class="non-field-errors">
+			{% for error in form.non_field_errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+		<div class="form-group">
+			<label for="{{ form.course_name.id_for_label }}">{{ form.course_name.label }}</label>
+			{{ form.course_name }}
+			{% if form.course_name.errors %}
+			{% for error in form.course_name.errors %}
+			<span class="error-message">{{ error }}</span>
+			{% endfor %}
+			{% endif %}
+		</div>
+
+		<div class="form-group">
+			<label for="{{ form.start_date.id_for_label }}">{{ form.start_date.label }}</label>
+			{{ form.start_date }}
+			{% if form.start_date.errors %}
+			{% for error in form.start_date.errors %}
+			<span class="error-message">{{ error }}</span>
+			{% endfor %}
+			{% endif %}
+		</div>
+
+		<div class="form-group">
+			<label for="{{ form.payment_method.id_for_label }}">{{ form.payment_method.label }}</label>
+			{{ form.payment_method }}
+			{% if form.payment_method.errors %}
+			{% for error in form.payment_method.errors %}
+			<span class="error-message">{{ error }}</span>
+			{% endfor %}
+			{% endif %}
+		</div>
+
+		<button type="submit" class="btn">Создать заявку</button>
+		<a href="{% url 'applications_list' %}" class="btn btn-secondary">Отмена</a>
+	</form>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const errorMessages = document.querySelectorAll('.error-message')
+		errorMessages.forEach(function (errorMsg) {
+			const input = errorMsg.previousElementSibling
+			if (input && input.classList.contains('form-control')) {
+				input.classList.add('error')
+			}
+		})
+
+		const inputs = document.querySelectorAll('.form-control')
+		inputs.forEach(function (input) {
+			input.addEventListener('input', function () {
+				this.classList.remove('error')
+				const errorMsg = this.nextElementSibling
+				if (errorMsg && errorMsg.classList.contains('error-message')) {
+					errorMsg.style.display = 'none'
+				}
+			})
+		})
+	});
+</script>
+{% endblock %}

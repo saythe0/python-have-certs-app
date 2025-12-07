@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Корочки. есть</title>
+	<link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+
+<body>
+	<nav>
+		<a href="{% url 'home' %}">🏠 Главная</a>
+		{% if user.is_authenticated %}
+		<a href="{% url 'applications_list' %}">📋 Мои заявки</a>
+		<a href="{% url 'logout' %}">🚪 Выйти</a>
+		<span class="user-info">Привет, {{ user.username }}!</span>
+		{% else %}
+		<a href="{% url 'login' %}">🔑 Войти</a>
+		<a href="{% url 'register' %}">📝 Регистрация</a>
+		{% endif %}
+	</nav>
+
+	{% if messages %}
+	<div class="messages-container">
+		{% for message in messages %}
+		<div class="alert alert-{{ message.tags }}">
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+
+	{% block content %}
+	{% endblock %}
+</body>
+
+</html>

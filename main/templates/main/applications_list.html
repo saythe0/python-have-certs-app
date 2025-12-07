@@ -1,0 +1,67 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container container-large">
+	<h2>📋 Мои заявки</h2>
+
+	<a href="{% url 'application_create' %}" class="btn" style="margin-bottom: 30px;">Создать новую заявку</a>
+
+	{% if applications %}
+	<div class="applications-list">
+		{% for application in applications %}
+		<div class="application-card-full">
+			<div class="application-header">
+				<h3>{{ application.course_name }}</h3>
+				<span class="status-badge status-{{ application.status }}">
+					{{ application.get_status_display }}
+				</span>
+			</div>
+
+			<div class="application-body">
+				<div class="info-grid">
+					<div class="info-item">
+						<strong>Дата начала:</strong>
+						<span>{{ application.start_date|date:"d. m.Y" }}</span>
+					</div>
+
+					<div class="info-item">
+						<strong>Способ оплаты:</strong>
+						<span>{{ application.get_payment_method_display }}</span>
+					</div>
+
+					<div class="info-item">
+						<strong>Статус:</strong>
+						<span>{{ application.get_status_display }}</span>
+					</div>
+
+					<div class="info-item">
+						<strong>Дата подачи:</strong>
+						<span>{{ application.created_at|date:"d. m.Y H:i" }}</span>
+					</div>
+				</div>
+			</div>
+
+			{% if application.status == 'completed' %}
+			{% if application.review %}
+			<div class="review-section">
+				<h4>📝 Ваш отзыв:</h4>
+				<div class="review-text">
+					{{ application.review.text }}
+				</div>
+				<p class="review-date">Оставлен: {{ application.review.created_at|date:"d.m.Y H:i" }}</p>
+			</div>
+			{% else %}
+			<div class="review-action">
+				<p>✅ Обучение завершено! Оставьте отзыв о курсе.</p>
+				<a href="{% url 'review_create' application.pk %}" class="btn btn-review">Оставить отзыв</a>
+			</div>
+			{% endif %}
+			{% endif %}
+		</div>
+		{% endfor %}
+	</div>
+	{% else %}
+	<p class="no-data">У вас пока нет заявок. Создайте первую! </p>
+	{% endif %}
+</div>
+{% endblock %}
